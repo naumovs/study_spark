@@ -1,8 +1,15 @@
-ThisBuild / version := "0.1.0-SNAPSHOT"
+name := "learnSparkBostonCrimes"
+version := "0.1"
+scalaVersion := "2.12.18"
 
-ThisBuild / scalaVersion := "2.13.12"
+libraryDependencies += "org.apache.spark" %% "spark-core" % "3.2.1" % Provided
+libraryDependencies += "org.apache.spark" %% "spark-sql"  % "3.2.1" % Provided
+libraryDependencies += "org.apache.spark" %% "spark-hive" % "3.2.1" % Provided
 
-lazy val root = (project in file("."))
-  .settings(
-    name := "study_spark"
-  )
+lazy val assemblySettings = Seq(
+  assembly / assemblyJarName := name.value + "-" + version.value + ".jar",
+  assembly / assemblyMergeStrategy := {
+  case "module-info.class" => MergeStrategy.discard
+  case x => (assembly / assemblyMergeStrategy).value.apply(x)
+  }
+)
